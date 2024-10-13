@@ -5,54 +5,37 @@ import Footer from "../components/Footer.tsx";
 // Import the styles
 import "../styles/pages/Style-HomePage.scss";
 
-// Import the function from the model
-import {displayAlertBoxes} from "../models/display-alert-boxes.ts";
+import {useCurrentAccount} from "@mysten/dapp-kit";
+import {Link} from "react-router-dom";
 
 function Home() {
 
-    function displayAlertBox() {
-        const checkedRadioButton: HTMLInputElement | null = document.querySelector('input[type="radio"]:checked');
-        checkedRadioButton ? displayAlertBoxes(checkedRadioButton.value) : alert('No radio button selected');
-    }
-
-    function hideAlertBox() {
-        const existingAlertBox = document.getElementById('alert-box');
-        if (existingAlertBox) {
-            existingAlertBox.remove();
-        }
-    }
+    const account = useCurrentAccount();
 
     return (
         <>
             <NavBar/>
 
-            <div className="container">
-                <h1 className="title">Home</h1>
-                <div className="content">
-                    <div className="radio-group">
-                        <div className="field">
-                            <input type="radio" id="success" name="alert" value="success"/>
-                            <label htmlFor="success">Success</label>
-                        </div>
-                        <div className="field">
-                            <input type="radio" id="info" name="alert" value="info"/>
-                            <label htmlFor="info">Info</label>
-                        </div>
-                        <div className="field">
-                            <input type="radio" id="warning" name="alert" value="warning"/>
-                            <label htmlFor="warning">Warning</label>
-                        </div>
-                        <div className="field">
-                            <input type="radio" id="danger" name="alert" value="danger"/>
-                            <label htmlFor="danger">Danger</label>
+            {
+                account ? (
+                    <div className="container">
+                        <Link to={"/test"}>
+                            Try transaction
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="container">
+                        <div className="content">
+                            <div>
+                                <div>
+                                    <h2>Connect Wallet</h2>
+                                    <p>Connect your wallet to see your account details.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="button-group">
-                        <button className="button" onClick={displayAlertBox}>Show Alert</button>
-                        <button className="button" onClick={hideAlertBox}>Hide Alert</button>
-                    </div>
-                </div>
-            </div>
+                )
+            }
 
             <Footer/>
         </>
